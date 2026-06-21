@@ -1,0 +1,12 @@
+node_modules/
+out/
+dist/
+*.log
+.DS_Store
+
+# Blog devlog — never commit (see CLAUDE.md)
+DEVLOG.md
+
+# Generated harvest data (regenerate via the adapter; the live site rsyncs these in)
+explorer/public/footprints.geojson
+explorer/public/annotations/

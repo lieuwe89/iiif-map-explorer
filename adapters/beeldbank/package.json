@@ -1,0 +1,19 @@
+{
+  "name": "@ime/adapter-beeldbank",
+  "version": "0.0.0",
+  "description": "Source Adapter: Beeldbank Groningen (Picturae/Memorix) -> interchange.",
+  "type": "module",
+  "scripts": {
+    "harvest": "tsx src/harvest.ts",
+    "check": "tsx src/check.ts",
+    "spotcheck": "tsx src/spotcheck.ts"
+  },
+  "dependencies": {
+    "@allmaps/annotation": "latest",
+    "@ime/interchange": "*",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/pngjs": "^6.0.5"
+  }
+}

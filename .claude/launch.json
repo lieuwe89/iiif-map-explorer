@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "explorer",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--workspace=@ime/explorer"],
+      "port": 5173
+    },
+    {
+      "name": "explorer-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview", "--workspace=@ime/explorer", "--", "--port", "4173", "--strictPort"],
+      "port": 4173
+    }
+  ]
+}

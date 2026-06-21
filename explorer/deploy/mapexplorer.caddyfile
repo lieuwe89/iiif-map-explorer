@@ -1,0 +1,9 @@
+mapexplorer.lieuwejongsma.nl {
+	encode gzip zstd
+	root * /home/lieuwe/apps/mapexplorer/dist
+	file_server
+
+	# Content-hashed JS/CSS never change — cache hard. (HTML + data stay revalidated.)
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+}

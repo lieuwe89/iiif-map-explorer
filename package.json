@@ -1,0 +1,16 @@
+{
+  "name": "iiif-map-explorer",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Generic zero-backend explorer for georeferenced IIIF map collections.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "adapters/*",
+    "explorer"
+  ],
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
