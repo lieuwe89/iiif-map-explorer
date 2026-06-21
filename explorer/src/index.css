@@ -207,6 +207,19 @@ body,
   width: auto;
   cursor: pointer;
 }
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 50;
+  background: rgba(20, 20, 22, 0.92);
+  color: #fff;
+  padding: 9px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+}
 .sel .t {
   font-weight: 600;
   margin-top: 6px;
