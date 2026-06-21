@@ -11,7 +11,7 @@ A generic, **zero-backend** web app for browsing large collections of georeferen
 - Shows map **outlines** (Footprints) at their true, rotated angle — recovered from each scan's transparent (nodata) border, not axis-aligned boxes.
 - Keeps the view legible: only the outlines that best **fit the current viewport** are drawn (ranked, 25 at a time, with a **prev/next pager**) — so dense areas never become chaos. **Locator dots** mark every filtered map so you can see where they are and zoom in.
 - **Click an outline → drapes that map** as live, warped IIIF imagery, with an **opacity slider**. Click a crowded spot and a **chooser** lists every map stacked there (hover a row to highlight it, click to drape).
-- Filters by **date** and **map size**.
+- Filters by **date** and **map size** with dual-handle range sliders (the handles bump rather than cross), and can hide maps with no known date.
 - A metadata panel: title, date, size, the **original (non-warped) scan** as a thumbnail, and a link back to the source.
 
 ## Architecture

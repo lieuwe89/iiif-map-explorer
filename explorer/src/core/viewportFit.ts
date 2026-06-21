@@ -64,13 +64,16 @@ export interface Filters {
   yearMax: number;
   sizeMin: number;
   sizeMax: number;
+  hideUndated: boolean;
 }
 
 export function applyFilters(features: FootprintFeature[], f: Filters): FootprintFeature[] {
   return features.filter((ft) => {
     const p = ft.properties;
     const dateOk =
-      p.dateStart == null || (p.dateStart <= f.yearMax && (p.dateEnd ?? p.dateStart) >= f.yearMin);
+      p.dateStart != null
+        ? p.dateStart <= f.yearMax && (p.dateEnd ?? p.dateStart) >= f.yearMin
+        : !f.hideUndated;
     const sizeOk = p.sizeKm2 >= f.sizeMin && p.sizeKm2 <= f.sizeMax;
     return dateOk && sizeOk;
   });
