@@ -4,6 +4,12 @@ dist/
 *.log
 .DS_Store
 
+# Editor/IDE config
+.claude/
+
+# Internal parking lot — not committed scope
+BACKLOG.md
+
 # Blog devlog — never commit (see CLAUDE.md)
 DEVLOG.md
 
