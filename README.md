@@ -13,6 +13,7 @@ A generic, **zero-backend** web app for browsing large collections of georeferen
 - **Click an outline → drapes that map** as live, warped IIIF imagery, with an **opacity slider**. Click a crowded spot and a **chooser** lists every map stacked there (hover a row to highlight it, click to drape).
 - Filters by **date** and **map size** with dual-handle range sliders (the handles bump rather than cross), and can hide maps with no known date.
 - A metadata panel: title, date, size, the **original (non-warped) scan** as a thumbnail, a link back to the source, and one-click copy of the map's **IIIF image manifest** (the Image API `info.json`).
+- A **location search** (Photon / OpenStreetMap, no key) flies the basemap to any place you type — jump to an area and the relevant outlines appear.
 
 ## Architecture
 

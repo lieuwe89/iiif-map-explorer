@@ -220,6 +220,80 @@ body,
   font-size: 13px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
 }
+.geosearch {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  width: 260px;
+}
+.geosearch input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  font: inherit;
+  font-size: 13px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  outline: none;
+}
+.geo-results {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  max-height: 240px;
+  overflow: auto;
+}
+.geo-results li {
+  padding: 7px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.geo-results li:hover {
+  background: #f0f4ff;
+}
+.mobile-notice {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.5);
+}
+.mobile-notice-card {
+  max-width: 320px;
+  padding: 22px 20px;
+  text-align: center;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.mobile-notice-card h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+.mobile-notice-card p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+}
+.mobile-notice-card button {
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 18px;
+  background: #ff2e88;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
 .sel .t {
   font-weight: 600;
   margin-top: 6px;
