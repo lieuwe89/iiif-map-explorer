@@ -227,9 +227,13 @@ body,
   z-index: 10;
   width: 260px;
 }
+.geo-input-wrap {
+  position: relative;
+}
 .geosearch input {
+  box-sizing: border-box;
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px 32px 8px 12px;
   border: 1px solid #ddd;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.95);
@@ -237,6 +241,27 @@ body,
   font-size: 13px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   outline: none;
+}
+.geo-clear {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  transform: translateY(-50%);
+  width: 19px;
+  height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: #e6e6e6;
+  color: #444;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+.geo-clear:hover {
+  background: #d4d4d4;
 }
 .geo-results {
   list-style: none;

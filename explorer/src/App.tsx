@@ -170,21 +170,43 @@ function GeoSearch({ map }: { map: { current: maplibregl.Map | null } }) {
     setQ(mainLabel(f));
     setOpen(false);
   };
+  const clear = () => {
+    setQ("");
+    setResults([]);
+    setOpen(false);
+    markerRef.current?.remove();
+    markerRef.current = null;
+  };
 
   return (
     <div className="geosearch">
-      <input
-        type="text"
-        placeholder="Search a place…"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        onFocus={() => results.length > 0 && setOpen(true)}
-        onBlur={() => window.setTimeout(() => setOpen(false), 150)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && results[0]) pick(results[0]);
-          else if (e.key === "Escape") setOpen(false);
-        }}
-      />
+      <div className="geo-input-wrap">
+        <input
+          type="text"
+          placeholder="Search a place…"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          onFocus={() => results.length > 0 && setOpen(true)}
+          onBlur={() => window.setTimeout(() => setOpen(false), 150)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && results[0]) pick(results[0]);
+            else if (e.key === "Escape") setOpen(false);
+          }}
+        />
+        {q.length > 0 && (
+          <button
+            type="button"
+            className="geo-clear"
+            aria-label="Clear search"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              clear();
+            }}
+          >
+            ×
+          </button>
+        )}
+      </div>
       {open && results.length > 0 && (
         <ul className="geo-results">
           {results.map((f, i) => (

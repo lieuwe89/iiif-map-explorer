@@ -1,7 +1,7 @@
 {
   "name": "iiif-map-explorer",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Generic zero-backend explorer for georeferenced IIIF map collections.",
   "license": "MIT",
   "workspaces": [
