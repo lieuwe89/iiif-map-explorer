@@ -195,7 +195,7 @@ body,
   border: 2px solid #ff2e88;
   cursor: pointer;
 }
-.row label.check {
+label.check {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -203,9 +203,12 @@ body,
   cursor: pointer;
   margin-bottom: 0;
 }
-.row label.check input {
+label.check input {
   width: auto;
   cursor: pointer;
+}
+.sel label.check {
+  margin-top: 8px;
 }
 .toast {
   position: fixed;

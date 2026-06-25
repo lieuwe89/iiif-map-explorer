@@ -275,6 +275,7 @@ export default function App() {
   const [manifestUrl, setManifestUrl] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [opacity, setOpacity] = useState(0.85);
+  const [hideOutlines, setHideOutlines] = useState(false);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
 
   // Render the current page slice (+ the pinned selection) into the GeoJSON source.
@@ -510,6 +511,19 @@ export default function App() {
     warpedRef.current?.setOpacity(opacity);
   }, [opacity]);
 
+  // Hide all pink chrome (browse outlines, the draped map's highlight, locator dots) while a Map
+  // is draped, so the warped imagery reads clean. fp-fill (invisible) stays, so you can still
+  // click to drape another Map. Only takes effect when something is draped — otherwise the empty
+  // basemap would have nothing on it.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+    const vis = hideOutlines && selected ? "none" : "visible";
+    for (const id of ["fp-line", "fp-selected", "fp-dots"]) {
+      if (map.getLayer(id)) map.setLayoutProperty(id, "visibility", vis);
+    }
+  }, [hideOutlines, selected, ready]);
+
   const pageCount = Math.max(1, Math.ceil(inView / PAGE_SIZE));
   const from = inView === 0 ? 0 : page * PAGE_SIZE + 1;
   const to = Math.min(inView, (page + 1) * PAGE_SIZE);
@@ -629,6 +643,14 @@ export default function App() {
               {selected.dateStart ?? "?"}–{selected.dateEnd ?? "?"} · {selected.sizeKm2} km²
             </div>
             <a href={selected.sourceUrl} target="_blank" rel="noreferrer">View on Beeldbank ↗</a>
+            <label className="check">
+              <input
+                type="checkbox"
+                checked={hideOutlines}
+                onChange={(e) => setHideOutlines(e.target.checked)}
+              />
+              Hide outlines while draped
+            </label>
             <div className="pager" style={{ marginTop: 8 }}>
               <button onClick={copyManifest} disabled={!manifestUrl}>Get IIIF manifest</button>
               <button onClick={() => setSelected(null)}>✕ hide overlay</button>
