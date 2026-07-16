@@ -9,7 +9,6 @@ export interface Bounds {
   ulY: number;
   lrX: number;
   lrY: number;
-  epsg: number | null;
 }
 
 /** Locate the GeoJP2 UUID box and return its embedded mini-GeoTIFF bytes. */
@@ -50,29 +49,16 @@ function parseGeoTiff(tiff: Buffer) {
   const scale = doubles(33550); // ModelPixelScale [sx, sy, sz]
   const tie = doubles(33922); // ModelTiepoint [i, j, k, X, Y, Z]
   if (!scale || !tie) throw new Error("missing ModelPixelScale/ModelTiepoint");
-  let epsg: number | null = null;
-  const gk = tags[34735]; // GeoKeyDirectory
-  if (gk) {
-    const base = gk.count * 2 > 4 ? u32(gk.valOff) : gk.valOff;
-    const numKeys = u16(base + 6);
-    for (let k = 0; k < numKeys; k++) {
-      const ko = base + 8 + k * 8;
-      const keyId = u16(ko);
-      const tagLoc = u16(ko + 2);
-      const value = u16(ko + 6);
-      if ((keyId === 2048 || keyId === 3072) && tagLoc === 0) epsg = value;
-    }
-  }
-  return { scale, tie, epsg };
+  return { scale, tie };
 }
 
 export function boundsFromGeoJp2(buf: Buffer, width: number, height: number): Bounds {
-  const { scale, tie, epsg } = parseGeoTiff(extractGeoTiff(buf));
+  const { scale, tie } = parseGeoTiff(extractGeoTiff(buf));
   const [sx, sy] = scale;
   const [i, j, , X, Y] = tie;
   const ulX = X - i * sx;
   const ulY = Y + j * sy;
-  return { ulX, ulY, lrX: ulX + width * sx, lrY: ulY - height * sy, epsg };
+  return { ulX, ulY, lrX: ulX + width * sx, lrY: ulY - height * sy };
 }
 
 /** Stream the download URL, read only the first maxBytes, then abort. Retries on 429/5xx/network. */

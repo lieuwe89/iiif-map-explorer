@@ -11,11 +11,11 @@
     "@allmaps/maplibre": "latest",
     "@ime/interchange": "*",
     "maplibre-gl": "^5.6.0",
-    "pmtiles": "^4.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@types/geojson": "^7946.0.16",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

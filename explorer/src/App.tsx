@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { FeatureCollection } from "geojson";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { WarpedMapLayer } from "@allmaps/maplibre";
@@ -258,7 +259,7 @@ export default function App() {
   const allRef = useRef<FootprintFeature[]>([]);
   const propsById = useRef<Map<string, FootprintProperties>>(new Map());
   const rankedRef = useRef<FootprintFeature[]>([]); // filtered + viewport-ranked, current view
-  const drapedUrls = useRef<Set<string>>(new Set());
+  const drapedUrl = useRef<string | null>(null);
   const filtersRef = useRef<Filters>(DEFAULT_FILTERS);
   const pageRef = useRef(0);
   const selectedRef = useRef<FootprintProperties | null>(null);
@@ -292,7 +293,7 @@ export default function App() {
     (map.getSource("fp") as maplibregl.GeoJSONSource).setData({
       type: "FeatureCollection",
       features: slice,
-    } as unknown as GeoJSON.FeatureCollection);
+    } as unknown as FeatureCollection);
     if (map.getLayer("fp-selected"))
       map.setFilter("fp-selected", ["==", ["get", "id"], sel ? sel.id : " "]);
   }, []);
@@ -303,7 +304,7 @@ export default function App() {
     if (!map) return;
     const sticky = selectedRef.current ? new Set([selectedRef.current.id]) : new Set<string>();
     const filtered = applyFilters(allRef.current, filtersRef.current);
-    rankedRef.current = rankFeatures(filtered, bboxOf(map), sticky).map((s) => s.feature);
+    rankedRef.current = rankFeatures(filtered, bboxOf(map), sticky);
     pageRef.current = 0;
     setInView(rankedRef.current.length);
     setPage(0);
@@ -320,8 +321,8 @@ export default function App() {
       for (const ft of raw.features) propsById.current.set(ft.properties.id, ft.properties);
       setTotal(raw.features.length);
 
-      map.addSource("fp", { type: "geojson", data: EMPTY as unknown as GeoJSON.FeatureCollection, generateId: true });
-      map.addSource("centroids", { type: "geojson", data: EMPTY as unknown as GeoJSON.FeatureCollection });
+      map.addSource("fp", { type: "geojson", data: EMPTY as unknown as FeatureCollection, generateId: true });
+      map.addSource("centroids", { type: "geojson", data: EMPTY as unknown as FeatureCollection });
 
       // Locator dots for every filtered Map (all zooms) — so you can see where Maps are, especially
       // the small ones, and know where to zoom in even when no outline qualifies for the current view.
@@ -420,7 +421,6 @@ export default function App() {
         setSelected(cands[0] ?? null);
       });
 
-      (window as unknown as Record<string, unknown>).__map = map;
       setReady(true);
       recompute();
       map.on("moveend", recompute);
@@ -435,14 +435,13 @@ export default function App() {
     const map = mapRef.current;
     const w = warpedRef.current;
     if (!map || !w) return;
-    for (const url of [...drapedUrls.current]) {
-      w.removeGeoreferenceAnnotationByUrl(url).catch(() => {});
-      drapedUrls.current.delete(url);
+    if (drapedUrl.current) {
+      w.removeGeoreferenceAnnotationByUrl(drapedUrl.current).catch(() => {});
+      drapedUrl.current = null;
     }
     if (selected) {
-      const url = "/" + selected.annotationUrl;
-      w.addGeoreferenceAnnotationByUrl(url).catch(() => {});
-      drapedUrls.current.add(url);
+      drapedUrl.current = "/" + selected.annotationUrl;
+      w.addGeoreferenceAnnotationByUrl(drapedUrl.current).catch(() => {});
     }
     if (ready) renderPage();
   }, [selected, ready, renderPage]);
@@ -465,7 +464,7 @@ export default function App() {
       (map.getSource("centroids") as maplibregl.GeoJSONSource).setData({
         type: "FeatureCollection",
         features: pts,
-      } as unknown as GeoJSON.FeatureCollection);
+      } as unknown as FeatureCollection);
     }, 150);
     return () => clearTimeout(id);
   }, [filters, ready]);

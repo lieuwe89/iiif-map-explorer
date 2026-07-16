@@ -17,8 +17,6 @@ export interface FootprintProperties {
   annotationUrl: string;
   /** Link back to the Source's detail page. */
   sourceUrl: string;
-  /** Thumbnail URL (for the popup). */
-  thumbUrl: string;
 }
 
 export interface FootprintFeature {

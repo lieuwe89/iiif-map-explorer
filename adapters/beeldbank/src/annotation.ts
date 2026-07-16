@@ -4,7 +4,7 @@ import { generateAnnotation } from "@allmaps/annotation";
 
 /** Closed GeoJSON ring from the 4 (possibly rotated) geographic corners. */
 export function footprintPolygon(geoCorners: number[][]): number[][][] {
-  return [[...geoCorners.map((c) => [c[0], c[1]]), [geoCorners[0][0], geoCorners[0][1]]]];
+  return [[...geoCorners, geoCorners[0]]];
 }
 
 /** True area of the (rotated) quad in km² — shoelace in a local equirectangular projection. */

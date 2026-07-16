@@ -125,7 +125,6 @@ async function main() {
           sizeKm2: Math.round(km2 * 100) / 100,
           annotationUrl: `annotations/${m.assetId}.json`,
           sourceUrl: m.sourceUrl,
-          thumbUrl: m.thumbUrl,
         },
       });
     } catch (e) {

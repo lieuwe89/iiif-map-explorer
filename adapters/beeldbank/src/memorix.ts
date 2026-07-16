@@ -16,7 +16,6 @@ export interface GeoMap {
   height: number;
   centroid: { lat: number; lng: number } | null;
   sourceUrl: string;
-  thumbUrl: string;
 }
 
 /** "1860-1880" -> [1860,1880]; "1900" -> [1900,1900]; junk -> [null,null]. */
@@ -73,7 +72,6 @@ export async function enumerateGeoreferenced(
         height: asset.height,
         centroid: center ? { lat: center.lat, lng: center.lng } : null,
         sourceUrl: `https://www.beeldbankgroningen.nl/beelden/detail/${m.id}/media/${asset.uuid}`,
-        thumbUrl: `https://images.memorix.nl/gra/thumb/350x350/${asset.uuid}.jpg`,
       });
       if (out.length >= limit) break;
     }

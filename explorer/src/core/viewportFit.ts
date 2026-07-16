@@ -79,18 +79,13 @@ export function applyFilters(features: FootprintFeature[], f: Filters): Footprin
   });
 }
 
-export interface Scored {
-  feature: FootprintFeature;
-  fit: number;
-}
-
 /**
- * Rank Maps by Viewport Fit. `sticky` (the currently-draped ids) get a fit bonus
- * so the Active Set has hysteresis — a draped Map stays unless a clearly better
+ * Rank Maps by Viewport Fit, best first. `sticky` (the currently-draped ids) get a fit
+ * bonus so the Active Set has hysteresis — a draped Map stays unless a clearly better
  * one displaces it, preventing flicker on small pan/zoom.
  */
-export function rankFeatures(features: FootprintFeature[], vp: BBox, sticky: Set<string>): Scored[] {
-  const out: Scored[] = [];
+export function rankFeatures(features: FootprintFeature[], vp: BBox, sticky: Set<string>): FootprintFeature[] {
+  const out: Array<{ feature: FootprintFeature; fit: number }> = [];
   for (const f of features) {
     let fit = viewportFit(featureBBox(f), vp);
     if (fit <= 0) continue;
@@ -98,5 +93,5 @@ export function rankFeatures(features: FootprintFeature[], vp: BBox, sticky: Set
     out.push({ feature: f, fit });
   }
   out.sort((a, b) => b.fit - a.fit);
-  return out;
+  return out.map((s) => s.feature);
 }
