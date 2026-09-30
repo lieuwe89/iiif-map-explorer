@@ -1,6 +1,7 @@
 // Enumerate georeferenced Maps from the Picturae/Memorix Mediabank API.
-// No server-side isgeotiff filter exists, so we full-scan and filter inline
-// (the search response carries asset.isgeotiff + mapdata + dimensions).
+// Server-side filter `fq[]=search_t_gegeorefereerd:ja` (the "Gegeorefereerd" facet,
+// listed in /mediabank/config?meta=1) narrows the ~310k corpus to the ~16.1k
+// georeferenced Records; the inline isgeotiff check then picks the Asset.
 
 const KEY = "fd45b590-346a-11e5-a2cb-0800200c9a66";
 const BASE = "https://webservices.memorix.nl/mediabank/media";
@@ -40,21 +41,25 @@ async function fetchJsonWithRetry(url: string, retries = 4): Promise<any> {
   }
 }
 
-/** Page the corpus, keeping Records whose Asset has isgeotiff, until `limit`. */
+/** Page the georeferenced Records, taking each one's isgeotiff Asset, until `limit`. */
 export async function enumerateGeoreferenced(
   limit = Infinity,
   onProgress?: (seen: number, geo: number, pages: number) => void,
 ): Promise<GeoMap[]> {
   const out: GeoMap[] = [];
-  const rows = 100;
+  const rows = 1000; // API max
   let page = 1;
   let seen = 0;
   while (out.length < limit) {
-    const data = await fetchJsonWithRetry(`${BASE}?apiKey=${KEY}&rows=${rows}&page=${page}`);
+    const q = new URLSearchParams({ apiKey: KEY, rows: String(rows), page: String(page) });
+    q.append("fq[]", "search_t_gegeorefereerd:ja");
+    const data = await fetchJsonWithRetry(`${BASE}?${q}`);
     const media: any[] = data?.media || [];
     if (media.length === 0) break;
     for (const m of media) {
       seen++;
+      // ~3% of Records carry two isgeotiff Assets; sampled pairs share dimensions and
+      // map centre (duplicate uploads of the same warp), so the first one suffices.
       const asset = (m.asset || []).find((a: any) => a.isgeotiff);
       if (!asset) continue;
       const md: Record<string, any> = Object.fromEntries(
@@ -75,10 +80,9 @@ export async function enumerateGeoreferenced(
       });
       if (out.length >= limit) break;
     }
-    if (page % 20 === 0) onProgress?.(seen, out.length, page);
+    onProgress?.(seen, out.length, page);
     page++;
     await sleep(110);
   }
-  onProgress?.(seen, out.length, page);
   return out;
 }

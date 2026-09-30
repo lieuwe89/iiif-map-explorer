@@ -49,7 +49,7 @@ async function main() {
   const t0 = Date.now();
   await mkdir(`${OUT}annotations`, { recursive: true });
 
-  // Cached enumeration — re-scanning 3,093 pages on every resume is wasteful.
+  // Cached enumeration — no need to re-query the API on every resume.
   let maps: GeoMap[];
   if (existsSync(`${OUT}maps.json`)) {
     maps = JSON.parse(readFileSync(`${OUT}maps.json`, "utf8"));

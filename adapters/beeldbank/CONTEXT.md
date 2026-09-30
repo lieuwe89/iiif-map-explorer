@@ -11,7 +11,7 @@ The Beeldbank's descriptive catalogue entry for an item (title, date, maker, loc
 The digital file behind a Record, identified by an **Asset-UUID** — the key for the IIIF Image API and thumbnails. Carries the `isgeotiff` flag and pixel dimensions. An Asset (not its Record) becomes the Map's IIIF resource in the Georeference Annotation.
 
 ### isgeotiff
-The Beeldbank's per-Asset boolean marking an Asset as georeferenced. The Adapter treats every Asset with `isgeotiff: true` as a Map (~16,106 of them). A Beeldbank concept only; it never reaches the Explorer — only the resulting Georeference Annotation does.
+The Beeldbank's per-Asset boolean marking an Asset as georeferenced. The Adapter queries only georeferenced Records server-side (`fq[]=search_t_gegeorefereerd:ja`, ~16,106 Records of ~310k), then takes each Record's first Asset with `isgeotiff: true` as its Map. Some Records carry two such Assets; they are duplicate uploads of the same warp, so only one is kept. A Beeldbank concept only; it never reaches the Explorer — only the resulting Georeference Annotation does.
 
 ### Centroid
 The single lat/lng point a Record exposes via `mapdata.center`. A coarse locator only — not the Footprint. The Adapter must still derive the true Footprint from the GeoJP2.
